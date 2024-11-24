@@ -26,9 +26,9 @@ export function metaframeworkPlugin(): vite.Plugin {
                   : ["/src/index.html", "/src/entry-client"],
               },
             },
-        ssr: {
-          noExternal: ["hono"],
-        },
+        // ssr: {
+        //   noExternal: ["hono"],
+        // },
       };
     },
     configureServer(server) {
