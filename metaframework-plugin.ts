@@ -12,8 +12,6 @@ export function metaframeworkPlugin(): vite.Plugin {
 
       return {
         esbuild: {
-          // jsx: "transform",
-          // jsxFactory: "jsx",
           jsx: "preserve",
           format: "esm",
         },
@@ -40,9 +38,7 @@ export function metaframeworkPlugin(): vite.Plugin {
 
           let template = await fs.readFile("./src/index.html", "utf-8");
           template = await server.transformIndexHtml(url, template);
-          const { render } = await server.ssrLoadModule(
-            "/src/entry-server.jsx"
-          );
+          const { render } = await server.ssrLoadModule("/src/entry-server");
           const rendered = await render(url);
 
           const html = template
@@ -56,11 +52,11 @@ export function metaframeworkPlugin(): vite.Plugin {
       };
     },
     async transform(code, id) {
-      if (id.endsWith(".jsx")) {
+      if (id.endsWith(".jsx") || id.endsWith(".tsx")) {
         const result = await esbuild.transform(
           `import { jsx as __jsx } from "hono/jsx";${code}`,
           {
-            loader: "jsx",
+            loader: "tsx",
             jsxFactory: "__jsx",
           }
         );
