@@ -1,0 +1,23 @@
+{
+  "name": "metaframework-experiment",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build && vite build --ssr",
+    "preview": "NODE_ENV=production node dist/server/entry.js"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.5",
+    "@types/express": "^5.0.0",
+    "typescript": "~5.6.2",
+    "vite": "^5.4.10"
+  },
+  "dependencies": {
+    "compression": "^1.7.5",
+    "express": "^4.21.1",
+    "hono": "^4.6.11",
+    "sirv": "^3.0.0"
+  }
+}
