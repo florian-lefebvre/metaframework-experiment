@@ -1,5 +1,6 @@
 import * as vite from "vite";
 import fs from "node:fs/promises";
+import esbuild from "esbuild";
 
 export function metaframeworkPlugin(): vite.Plugin {
   let isDev: boolean;
@@ -10,6 +11,12 @@ export function metaframeworkPlugin(): vite.Plugin {
       isDev = env.command !== "build";
 
       return {
+        esbuild: {
+          // jsx: "transform",
+          // jsxFactory: "jsx",
+          jsx: "preserve",
+          format: "esm",
+        },
         build: isDev
           ? {}
           : {
@@ -17,10 +24,13 @@ export function metaframeworkPlugin(): vite.Plugin {
               outDir: env.isSsrBuild ? "dist/server" : "dist/client",
               rollupOptions: {
                 input: env.isSsrBuild
-                  ? ["/src/entry-server.js", "/src/entry.ts"]
-                  : ["/src/index.html", "/src/entry-client.js"],
+                  ? ["/src/entry-server", "/src/entry"]
+                  : ["/src/index.html", "/src/entry-client"],
               },
             },
+        ssr: {
+          noExternal: ["hono"],
+        },
       };
     },
     configureServer(server) {
@@ -30,7 +40,9 @@ export function metaframeworkPlugin(): vite.Plugin {
 
           let template = await fs.readFile("./src/index.html", "utf-8");
           template = await server.transformIndexHtml(url, template);
-          const { render } = await server.ssrLoadModule("/src/entry-server.js");
+          const { render } = await server.ssrLoadModule(
+            "/src/entry-server.jsx"
+          );
           const rendered = await render(url);
 
           const html = template
@@ -42,6 +54,21 @@ export function metaframeworkPlugin(): vite.Plugin {
           res.end(html);
         });
       };
+    },
+    async transform(code, id) {
+      if (id.endsWith(".jsx")) {
+        const result = await esbuild.transform(
+          `import { jsx as __jsx } from "hono/jsx";${code}`,
+          {
+            loader: "jsx",
+            jsxFactory: "__jsx",
+          }
+        );
+
+        return {
+          code: result.code,
+        };
+      }
     },
   };
 }
