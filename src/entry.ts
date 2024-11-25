@@ -30,7 +30,7 @@ app.use("*", async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, "");
     // @ts-ignore
-    const { render } = await import("./entry-server.custom");
+    const { render } = await import("./entry-server");
 
     const rendered = await render(url);
 

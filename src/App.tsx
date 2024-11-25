@@ -1,4 +1,4 @@
-/** @jsxImportSource jsx-test */
+/** @jsxImportSource ./jsx-test */
 
 import javascriptLogo from "./javascript.svg";
 // import { ReactComponent } from "./ReactComponent";

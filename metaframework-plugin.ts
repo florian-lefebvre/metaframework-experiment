@@ -1,6 +1,6 @@
 import * as vite from "vite";
 import fs from "node:fs/promises";
-import esbuild from "esbuild";
+import { resolve } from "node:path";
 
 export function metaframeworkPlugin(): vite.Plugin {
   let isDev: boolean;
@@ -21,7 +21,7 @@ export function metaframeworkPlugin(): vite.Plugin {
               outDir: env.isSsrBuild ? "dist/server" : "dist/client",
               rollupOptions: {
                 input: env.isSsrBuild
-                  ? ["/src/entry-server.custom", "/src/entry"]
+                  ? ["/src/entry-server", "/src/entry"]
                   : ["/src/index.html", "/src/entry-client"],
               },
             },
@@ -30,6 +30,27 @@ export function metaframeworkPlugin(): vite.Plugin {
         // },
       };
     },
+    resolveId(id) {
+      if (id === "rxcore") {
+        return `\0rxcore`;
+      }
+    },
+    load(id) {
+      if (id === `\0rxcore`) {
+        return `
+        export {
+  getOwner,
+  createComponent,
+  createRoot as root,
+  createRenderEffect as effect,
+  createMemo as memo,
+  sharedConfig,
+  untrack,
+  mergeProps,
+} from "solid-js";
+        `;
+      }
+    },
     configureServer(server) {
       return () => {
         server.middlewares.use(async (req, res, next) => {
@@ -37,9 +58,7 @@ export function metaframeworkPlugin(): vite.Plugin {
 
           let template = await fs.readFile("./src/index.html", "utf-8");
           template = await server.transformIndexHtml(url, template);
-          const { render } = await server.ssrLoadModule(
-            "/src/entry-server.custom"
-          );
+          const { render } = await server.ssrLoadModule("/src/entry-server");
           const rendered = await render(url);
 
           const html = template
@@ -53,7 +72,7 @@ export function metaframeworkPlugin(): vite.Plugin {
       };
     },
     // async transform(code, id) {
-    //   if (id.endsWith(".custom.jsx") || id.endsWith(".custom.tsx")) {
+    //   if (id.endsWith(".jsx") || id.endsWith(".tsx")) {
     //     const result = await esbuild.transform(
     //       `import { jsx as __jsx } from "hono/jsx";${code}`,
     //       {
