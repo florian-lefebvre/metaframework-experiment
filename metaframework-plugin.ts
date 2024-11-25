@@ -22,7 +22,7 @@ export function metaframeworkPlugin(): vite.Plugin {
               outDir: env.isSsrBuild ? "dist/server" : "dist/client",
               rollupOptions: {
                 input: env.isSsrBuild
-                  ? ["/src/entry-server", "/src/entry"]
+                  ? ["/src/entry-server.custom", "/src/entry"]
                   : ["/src/index.html", "/src/entry-client"],
               },
             },
@@ -38,7 +38,7 @@ export function metaframeworkPlugin(): vite.Plugin {
 
           let template = await fs.readFile("./src/index.html", "utf-8");
           template = await server.transformIndexHtml(url, template);
-          const { render } = await server.ssrLoadModule("/src/entry-server");
+          const { render } = await server.ssrLoadModule("/src/entry-server.custom");
           const rendered = await render(url);
 
           const html = template
@@ -52,7 +52,7 @@ export function metaframeworkPlugin(): vite.Plugin {
       };
     },
     async transform(code, id) {
-      if (id.endsWith(".jsx") || id.endsWith(".tsx")) {
+      if (id.endsWith(".custom.jsx") || id.endsWith(".custom.tsx")) {
         const result = await esbuild.transform(
           `import { jsx as __jsx } from "hono/jsx";${code}`,
           {

@@ -1,7 +1,6 @@
 import javascriptLogo from "./javascript.svg";
-import { html } from "hono/html";
 
-function App({ name }: { name: string }) {
+export function App({ name }: { name: string }) {
   return (
     <div>
       <a href="https://vite.dev" target="_blank">
@@ -20,12 +19,4 @@ function App({ name }: { name: string }) {
       <p class="read-the-docs">Click on the Vite logo to learn more</p>
     </div>
   );
-}
-
-export async function render(_url: string) {
-  const body = await html`${App({ name: "Vite" })}`;
-
-  return {
-    html: body,
-  };
 }
