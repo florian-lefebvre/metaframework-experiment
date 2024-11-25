@@ -12,7 +12,6 @@ export function metaframeworkPlugin(): vite.Plugin {
 
       return {
         esbuild: {
-          jsx: "preserve",
           format: "esm",
         },
         build: isDev
@@ -38,7 +37,9 @@ export function metaframeworkPlugin(): vite.Plugin {
 
           let template = await fs.readFile("./src/index.html", "utf-8");
           template = await server.transformIndexHtml(url, template);
-          const { render } = await server.ssrLoadModule("/src/entry-server.custom");
+          const { render } = await server.ssrLoadModule(
+            "/src/entry-server.custom"
+          );
           const rendered = await render(url);
 
           const html = template
@@ -51,20 +52,23 @@ export function metaframeworkPlugin(): vite.Plugin {
         });
       };
     },
-    async transform(code, id) {
-      if (id.endsWith(".custom.jsx") || id.endsWith(".custom.tsx")) {
-        const result = await esbuild.transform(
-          `import { jsx as __jsx } from "hono/jsx";${code}`,
-          {
-            loader: "tsx",
-            jsxFactory: "__jsx",
-          }
-        );
+    // async transform(code, id) {
+    //   if (id.endsWith(".custom.jsx") || id.endsWith(".custom.tsx")) {
+    //     const result = await esbuild.transform(
+    //       `import { jsx as __jsx } from "hono/jsx";${code}`,
+    //       {
+    //         jsx: "preserve",
+    //         loader: "tsx",
+    //         jsxFactory: "__jsx",
+    //       }
+    //     );
 
-        return {
-          code: result.code,
-        };
-      }
-    },
+    //     console.log(result)
+
+    //     return {
+    //       code: result.code,
+    //     };
+    //   }
+    // },
   };
 }

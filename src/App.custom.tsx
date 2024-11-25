@@ -1,4 +1,11 @@
+/** @jsxImportSource jsx-test */
+
 import javascriptLogo from "./javascript.svg";
+// import { ReactComponent } from "./ReactComponent";
+
+// function Island({ children }: { children: any }) {
+//   return <div>{children}</div>;
+// }
 
 export function App({ name }: { name: string }) {
   return (
@@ -13,6 +20,9 @@ export function App({ name }: { name: string }) {
         <img src={javascriptLogo} class="logo vanilla" alt="JavaScript logo" />
       </a>
       <h1>Hello {name}!</h1>
+      {/* <Island> */}
+      {/* <ReactComponent /> */}
+      {/* </Island> */}
       <div class="card">
         <button id="counter" type="button"></button>
       </div>

@@ -19,8 +19,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "jsx": "preserve",
-    "jsxImportSource": "hono/jsx"
+    "jsx": "preserve"
   },
   "include": ["src"]
 }
