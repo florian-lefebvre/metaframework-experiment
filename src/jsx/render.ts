@@ -1,4 +1,4 @@
-import { Tag } from "./jsx.types";
+import type { JSX, Tag } from "./jsx.types";
 
 export function attributesToString(attributes: Attributes): string {
   const result: string[] = [];

@@ -1,3 +1,5 @@
+import type { JSX } from "./jsx.types";
+
 export function createElement(
   tag:
     | string
@@ -58,3 +60,5 @@ export const _jsxs = jsx;
 
 export const Fragment = "";
 export const _Fragment = Fragment;
+
+export type { JSX };
