@@ -25,8 +25,8 @@ function attributeToString([key, value]: [string, any]): string {
         return `style="${escapeQuotes(styles.join("; "))}"`;
       case "class":
         const classes = Object.entries(value)
-          .filter(([k, v]) => v)
-          .map(([k, v]) => k);
+          .filter(([_k, v]) => v)
+          .map(([k, _v]) => k);
         return classes.length > 0
           ? `class="${escapeQuotes(classes.join(" "))}"`
           : "";
@@ -123,7 +123,8 @@ const VOID_TAGS = new Set([
  */
 export async function jsxToString(
   this: any,
-  jsxElement: JSX.Element
+  jsxElement: JSX.Element,
+  renderers: Record<string, (el: any) => any | Promise<any>>
 ): Promise<string> {
   const $jsxToString = this?.jsxToString || jsxToString;
 
@@ -155,7 +156,7 @@ export async function jsxToString(
     if (element.tag === "") {
       const result: string[] = [];
       for (const child of element.children) {
-        const str = await $jsxToString.call(this, child);
+        const str = await $jsxToString.call(this, child, renderers);
         if (str.length > 0) {
           result.push(str);
         }
@@ -171,7 +172,7 @@ export async function jsxToString(
 
       const children: string[] = [];
       for (const child of element.children) {
-        const str = await $jsxToString.call(this, child);
+        const str = await $jsxToString.call(this, child, renderers);
         if (str.length > 0) {
           children.push(str);
         }
@@ -184,11 +185,23 @@ export async function jsxToString(
   }
 
   if (typeof jsxElement.tag === "function") {
+    if (
+      "__framework" in jsxElement.tag &&
+      typeof jsxElement.tag.__framework === "string"
+    ) {
+      if (jsxElement.tag.__framework in renderers) {
+        return await renderers[jsxElement.tag.__framework](
+          jsxElement.tag(jsxElement.props)
+        );
+      }
+      console.warn(`Renderer "${jsxElement.tag.__framework} not found"`);
+      return "";
+    }
     const jsxElementTag = await jsxElement.tag.call(this, jsxElement.props);
-    return await $jsxToString.call(this, jsxElementTag);
+    return await $jsxToString.call(this, jsxElementTag, renderers);
   }
 
   return "";
 }
 
-function assertSync(e: JSX.Element): asserts e is JSX.SyncElement {}
+function assertSync(_: JSX.Element): asserts _ is JSX.SyncElement {}
