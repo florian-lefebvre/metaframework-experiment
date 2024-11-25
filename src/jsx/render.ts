@@ -124,7 +124,7 @@ const VOID_TAGS = new Set([
 export async function jsxToString(
   this: any,
   jsxElement: JSX.Element,
-  renderers: Record<string, (el: any) => any | Promise<any>>
+  renderers: Record<string, (tag: Tag) => any | Promise<any>>
 ): Promise<string> {
   const $jsxToString = this?.jsxToString || jsxToString;
 
@@ -190,9 +190,7 @@ export async function jsxToString(
       typeof jsxElement.tag.__framework === "string"
     ) {
       if (jsxElement.tag.__framework in renderers) {
-        return await renderers[jsxElement.tag.__framework](
-          jsxElement.tag(jsxElement.props)
-        );
+        return await renderers[jsxElement.tag.__framework](jsxElement);
       }
       console.warn(`Renderer "${jsxElement.tag.__framework} not found"`);
       return "";

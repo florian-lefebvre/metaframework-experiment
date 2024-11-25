@@ -6,7 +6,7 @@ export function metaframeworkPlugin(): vite.Plugin {
 
   return {
     name: "metaframework",
-    config(_, env) {
+    config(_config, env) {
       isDev = env.command !== "build";
 
       return {

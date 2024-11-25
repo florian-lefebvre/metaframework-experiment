@@ -1,10 +1,5 @@
-const frameworkComponent = <TFn extends (...args: any[]) => any>(
-  framework: string,
-  fn: TFn
-) =>
-  Object.assign(fn, {
-    __framework: framework,
-  });
+/** @jsxImportSource react */
+import { frameworkComponent } from "./utils";
 
 export const ReactComponent = frameworkComponent("react", function () {
   return <div>React</div>;

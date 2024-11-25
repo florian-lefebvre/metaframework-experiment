@@ -2,6 +2,10 @@
 
 import javascriptLogo from "./javascript.svg";
 import { ReactComponent } from "./ReactComponent";
+import { frameworkComponent } from "./utils";
+import _VueComponent from "./VueComponent.vue";
+
+const VueComponent = frameworkComponent("vue", () => _VueComponent)
 
 // function Island({ children }: { children: any }) {
 //   return <div>{children}</div>;
@@ -22,6 +26,7 @@ export function App({ name }: { name: string }) {
       <h1>Hello {name}!</h1>
       {/* <Island> */}
       <ReactComponent />
+      <VueComponent name="Vue" />
       {/* </Island> */}
       <div class="card">
         <button id="counter" type="button"></button>
