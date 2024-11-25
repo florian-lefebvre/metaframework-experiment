@@ -1,18 +1,16 @@
-/** @jsxImportSource ./jsx-test */
+/** @jsxImportSource ./jsx */
 
-import { html } from "hono/html";
+import { jsxToString } from "jsx-async-runtime";
 import { App } from "./App";
-import { renderToString } from "../node_modules/dom-expressions/src/server"
 
 export async function render(_url: string) {
-  // const body = await html`${(<App name="Vite" />)}`;
-
   const comp = <App name="Vite" />;
-  console.log(comp)
-  // console.log(renderToString(comp))
-  const body = "<div>test</div>";
-  // const body = renderToString()
-  // console.log(body)
+  const body = await jsxToString(comp);
+  console.log({
+    comp,
+    body,
+    test: comp.props.children
+  })
 
   return {
     html: body,

@@ -14,21 +14,12 @@ importers:
       compression:
         specifier: ^1.7.5
         version: 1.7.5
-      dom-expressions:
-        specifier: ^0.39.4
-        version: 0.39.4(csstype@3.1.3)(seroval-plugins@1.1.1(seroval@1.1.1))(seroval@1.1.1)
       esbuild:
         specifier: ^0.24.0
         version: 0.24.0
       express:
         specifier: ^4.21.1
         version: 4.21.1
-      hono:
-        specifier: ^4.6.11
-        version: 4.6.11
-      hyper-dom-expressions:
-        specifier: ^0.39.4
-        version: 0.39.4
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -38,9 +29,6 @@ importers:
       sirv:
         specifier: ^3.0.0
         version: 3.0.0
-      solid-js:
-        specifier: ^1.9.3
-        version: 1.9.3
     devDependencies:
       '@types/compression':
         specifier: ^1.7.5
@@ -614,9 +602,6 @@ packages:
   array-flatten@1.1.1:
     resolution: {integrity: sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==}
 
-  babel-plugin-transform-rename-import@2.3.0:
-    resolution: {integrity: sha512-dPgJoT57XC0PqSnLgl2FwNvxFrWlspatX2dkk7yjKQj5HHGw071vAcOf+hqW8ClqcBDMvEbm6mevn5yHAD8mlQ==}
-
   body-parser@1.20.3:
     resolution: {integrity: sha512-7rAxByjUMqQ3/bHJy7D6OGXvx/MMc4IqBn/X0fcM1QUcAItpZrBEYhWGem+tzXH90c+G01ypMcYJBO9Y30203g==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
@@ -694,13 +679,6 @@ packages:
   destroy@1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
-
-  dom-expressions@0.39.4:
-    resolution: {integrity: sha512-dIumf1IVt6KWfysMMp2KkVSnOi9JGNt4qzJnYT4V5At+xguAsbv1ByN4w+e8tTlq1EuwkizEWnG9YRi9PfGJXQ==}
-    peerDependencies:
-      csstype: ^3.0
-      seroval: ^1.1.0
-      seroval-plugins: ^1.1.0
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -799,16 +777,9 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  hono@4.6.11:
-    resolution: {integrity: sha512-f0LwJQFKdUUrCUAVowxSvNCjyzI7ZLt8XWYU/EApyeq5FfOvHFarBaE5rjU9HTNFk4RI0FkdB2edb3p/7xZjzQ==}
-    engines: {node: '>=16.9.0'}
-
   http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
     engines: {node: '>= 0.8'}
-
-  hyper-dom-expressions@0.39.4:
-    resolution: {integrity: sha512-1NM41ZQOfwBnlE/HELNeyMruI3tpaaN6Q50zIKUHfK/kfT4xkN6PmSShvHcBDz3sr4ySE/xREdudubeC8W/oGQ==}
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -968,16 +939,6 @@ packages:
     resolution: {integrity: sha512-dW41u5VfLXu8SJh5bwRmyYUbAoSB3c9uQh6L8h/KtsFREPWpbX1lrljJo186Jc4nmci/sGUZ9a0a0J2zgfq2hw==}
     engines: {node: '>= 0.8.0'}
 
-  seroval-plugins@1.1.1:
-    resolution: {integrity: sha512-qNSy1+nUj7hsCOon7AO4wdAIo9P0jrzAMp18XhiOzA6/uO5TKtP7ScozVJ8T293oRIvi5wyCHSM4TrJo/c/GJA==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      seroval: ^1.0
-
-  seroval@1.1.1:
-    resolution: {integrity: sha512-rqEO6FZk8mv7Hyv4UCj3FD3b6Waqft605TLfsCe/BiaylRpyyMC0b+uA5TJKawX3KzMrdi3wsLbCaLplrQmBvQ==}
-    engines: {node: '>=10'}
-
   serve-static@1.16.2:
     resolution: {integrity: sha512-VqpjJZKadQB/PEbEwvFdO43Ax5dFBZ2UECszz8bQ7pi7wt//PWe1P6MN7eCnjsatYtBT6EuiClbjSWP2WrIoTw==}
     engines: {node: '>= 0.8.0'}
@@ -996,9 +957,6 @@ packages:
   sirv@3.0.0:
     resolution: {integrity: sha512-BPwJGUeDaDCHihkORDchNyyTvWFhcusy1XMmhEVTQTwGeybFbp8YEmB+njbPnth1FibULBSBVwCQni25XlCUDg==}
     engines: {node: '>=18'}
-
-  solid-js@1.9.3:
-    resolution: {integrity: sha512-5ba3taPoZGt9GY3YlsCB24kCg0Lv/rie/HTD4kG6h4daZZz7+yK02xn8Vx8dLYBc9i6Ps5JwAbEiqjmKaLB3Ag==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -1513,8 +1471,6 @@ snapshots:
 
   array-flatten@1.1.1: {}
 
-  babel-plugin-transform-rename-import@2.3.0: {}
-
   body-parser@1.20.3:
     dependencies:
       bytes: 3.1.2
@@ -1598,13 +1554,6 @@ snapshots:
   depd@2.0.0: {}
 
   destroy@1.2.0: {}
-
-  dom-expressions@0.39.4(csstype@3.1.3)(seroval-plugins@1.1.1(seroval@1.1.1))(seroval@1.1.1):
-    dependencies:
-      babel-plugin-transform-rename-import: 2.3.0
-      csstype: 3.1.3
-      seroval: 1.1.1
-      seroval-plugins: 1.1.1(seroval@1.1.1)
 
   ee-first@1.1.1: {}
 
@@ -1764,8 +1713,6 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hono@4.6.11: {}
-
   http-errors@2.0.0:
     dependencies:
       depd: 2.0.0
@@ -1773,8 +1720,6 @@ snapshots:
       setprototypeof: 1.2.0
       statuses: 2.0.1
       toidentifier: 1.0.1
-
-  hyper-dom-expressions@0.39.4: {}
 
   iconv-lite@0.4.24:
     dependencies:
@@ -1928,12 +1873,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  seroval-plugins@1.1.1(seroval@1.1.1):
-    dependencies:
-      seroval: 1.1.1
-
-  seroval@1.1.1: {}
-
   serve-static@1.16.2:
     dependencies:
       encodeurl: 2.0.0
@@ -1966,12 +1905,6 @@ snapshots:
       '@polka/url': 1.0.0-next.28
       mrmime: 2.0.0
       totalist: 3.0.1
-
-  solid-js@1.9.3:
-    dependencies:
-      csstype: 3.1.3
-      seroval: 1.1.1
-      seroval-plugins: 1.1.1(seroval@1.1.1)
 
   source-map-js@1.2.1: {}
 

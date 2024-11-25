@@ -1,7 +1,7 @@
-/** @jsxImportSource ./jsx-test */
+/** @jsxImportSource ./jsx */
 
 import javascriptLogo from "./javascript.svg";
-// import { ReactComponent } from "./ReactComponent";
+import { ReactComponent } from "./ReactComponent";
 
 // function Island({ children }: { children: any }) {
 //   return <div>{children}</div>;
@@ -21,7 +21,7 @@ export function App({ name }: { name: string }) {
       </a>
       <h1>Hello {name}!</h1>
       {/* <Island> */}
-      {/* <ReactComponent /> */}
+      <ReactComponent />
       {/* </Island> */}
       <div class="card">
         <button id="counter" type="button"></button>

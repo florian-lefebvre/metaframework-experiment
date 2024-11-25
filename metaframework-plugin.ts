@@ -1,6 +1,5 @@
 import * as vite from "vite";
 import fs from "node:fs/promises";
-import { resolve } from "node:path";
 
 export function metaframeworkPlugin(): vite.Plugin {
   let isDev: boolean;
@@ -25,31 +24,7 @@ export function metaframeworkPlugin(): vite.Plugin {
                   : ["/src/index.html", "/src/entry-client"],
               },
             },
-        // ssr: {
-        //   noExternal: ["hono"],
-        // },
       };
-    },
-    resolveId(id) {
-      if (id === "rxcore") {
-        return `\0rxcore`;
-      }
-    },
-    load(id) {
-      if (id === `\0rxcore`) {
-        return `
-        export {
-  getOwner,
-  createComponent,
-  createRoot as root,
-  createRenderEffect as effect,
-  createMemo as memo,
-  sharedConfig,
-  untrack,
-  mergeProps,
-} from "solid-js";
-        `;
-      }
     },
     configureServer(server) {
       return () => {
@@ -71,23 +46,5 @@ export function metaframeworkPlugin(): vite.Plugin {
         });
       };
     },
-    // async transform(code, id) {
-    //   if (id.endsWith(".jsx") || id.endsWith(".tsx")) {
-    //     const result = await esbuild.transform(
-    //       `import { jsx as __jsx } from "hono/jsx";${code}`,
-    //       {
-    //         jsx: "preserve",
-    //         loader: "tsx",
-    //         jsxFactory: "__jsx",
-    //       }
-    //     );
-
-    //     console.log(result)
-
-    //     return {
-    //       code: result.code,
-    //     };
-    //   }
-    // },
   };
 }
