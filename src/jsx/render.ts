@@ -184,7 +184,7 @@ export async function jsxToString(
     }
   }
 
-  if (typeof jsxElement.tag === "function") {
+  if (typeof jsxElement.tag === "function" || typeof jsxElement.tag === "object") {
     if (
       "__framework" in jsxElement.tag &&
       typeof jsxElement.tag.__framework === "string"
