@@ -30,16 +30,25 @@ export function createElement(
     //@ts-expect-error
     tag,
     props,
+    __renderer: "core",
   };
 }
 
 function mapChildren(children: JSX.Children, accumulator: JSX.Element[]): void {
   switch (typeof children) {
     case "string":
-      accumulator.push({ type: "textNode", text: children });
+      accumulator.push({
+        type: "textNode",
+        text: children,
+        __renderer: "core",
+      });
       break;
     case "number":
-      accumulator.push({ type: "textNode", text: children.toString() });
+      accumulator.push({
+        type: "textNode",
+        text: children.toString(),
+        __renderer: "core",
+      });
       break;
     case "object":
       if (Array.isArray(children)) {

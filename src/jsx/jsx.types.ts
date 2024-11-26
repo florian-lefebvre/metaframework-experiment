@@ -2,6 +2,7 @@ export type Tag = {
   type: "tag";
   tag: (props: Props) => JSX.Element;
   props: Props;
+  __renderer: "core"
 };
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 type TextNode = {
   type: "textNode";
   text: string;
+  __renderer: "core";
 };
 
 export namespace JSX {

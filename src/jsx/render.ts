@@ -114,6 +114,19 @@ const VOID_TAGS = new Set([
   "wbr",
 ]);
 
+export type Renderer = {
+  check: (
+    Component: any,
+    props: any,
+    children: any
+  ) => boolean | Promise<boolean>;
+  render: (
+    Component: any,
+    props: any,
+    children: any
+  ) => string | Promise<string>;
+};
+
 /**
  * Renders a JSX element to a string representation.
  *
@@ -124,7 +137,7 @@ const VOID_TAGS = new Set([
 export async function jsxToString(
   this: any,
   jsxElement: JSX.Element,
-  renderers: Record<string, (tag: Tag) => any | Promise<any>>
+  renderers: Array<Renderer>
 ): Promise<string> {
   const $jsxToString = this?.jsxToString || jsxToString;
 
@@ -184,22 +197,41 @@ export async function jsxToString(
     }
   }
 
-  if (typeof jsxElement.tag === "function" || typeof jsxElement.tag === "object") {
-    if (
-      "__framework" in jsxElement.tag &&
-      typeof jsxElement.tag.__framework === "string"
-    ) {
-      if (jsxElement.tag.__framework in renderers) {
-        return await renderers[jsxElement.tag.__framework](jsxElement);
-      }
-      console.warn(`Renderer "${jsxElement.tag.__framework} not found"`);
-      return "";
-    }
+  // Function we control
+  if (typeof jsxElement.tag === "function") {
     const jsxElementTag = await jsxElement.tag.call(this, jsxElement.props);
-    return await $jsxToString.call(this, jsxElementTag, renderers);
+    if (typeof jsxElementTag === "object") {
+      if (jsxElementTag === null || jsxElementTag.__renderer === "core") {
+        return await $jsxToString.call(this, jsxElementTag, renderers);
+      }
+    } else {
+      return await $jsxToString.call(this, jsxElementTag, renderers);
+    }
+    // Only objects that do not fit pass through
   }
 
-  return "";
+  if (!("tag" in jsxElement)) {
+    return "";
+  }
+
+  // Renderers
+  for (const renderer of renderers) {
+    const { children, ...props } = jsxElement.props;
+    let jsxElementTag: any = jsxElement.tag;
+    if (typeof jsxElement.tag === "function") {
+      jsxElementTag = await jsxElement.tag.call(this, jsxElement.props);
+    }
+    const valid = await renderer.check(jsxElementTag, props, children);
+    if (valid) {
+      return await renderer.render(
+        jsxElement.tag,
+        jsxElement.props,
+        jsxElement.props.children
+      );
+    }
+  }
+
+  throw new Error("no renderer found");
 }
 
 function assertSync(_: JSX.Element): asserts _ is JSX.SyncElement {}

@@ -1,6 +1,5 @@
 import * as vite from "vite";
 import fs from "node:fs/promises";
-import path from "node:path";
 
 export function metaframeworkPlugin(): Array<vite.Plugin> {
   return [
@@ -46,30 +45,6 @@ export function metaframeworkPlugin(): Array<vite.Plugin> {
             res.end(html);
           });
         };
-      },
-      transform(code, id) {
-        const filename = path.basename(id, path.extname(id));
-
-        // Vue
-        if (id.endsWith(".vue")) {
-          return {
-            code: code.replace(
-              `export {`,
-              `Object.assign(${filename}_default, { __framework: "vue" }); export {`
-            ),
-          };
-        }
-        // React
-        if (id.endsWith(".jsx") || id.endsWith(".tsx")) {
-          if (code.includes('import { jsxDEV } from "react/jsx-dev-runtime"')) {
-            return {
-              code: code.replace(
-                `export {`,
-                `Object.assign(${filename}, { __framework: "react" }); export {`
-              ),
-            };
-          }
-        }
       },
     },
   ];
