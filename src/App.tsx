@@ -22,7 +22,10 @@ export function App({ name }: { name: string }) {
         <p>this is a test</p>
         abcdef
       </ReactComponent>
-      {/* <VueComponent name="Vue" /> */}
+      <VueComponent name="Vue">
+        <p>this is a test</p>
+        abcdef
+      </VueComponent>
       {/* </Island> */}
       <div class="card">
         <button id="counter" type="button"></button>

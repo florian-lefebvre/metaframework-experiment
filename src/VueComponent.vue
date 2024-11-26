@@ -6,4 +6,5 @@ defineProps<{
 
 <template>
     <div>{{ name }}</div>
+    <div><slot /></div>
 </template>

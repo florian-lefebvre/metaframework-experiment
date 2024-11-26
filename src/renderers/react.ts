@@ -19,6 +19,9 @@ const StaticHtml = ({ value, name }: { value?: string; name?: string }) => {
     name,
     suppressHydrationWarning: true,
     dangerouslySetInnerHTML: { __html: value },
+    style: {
+      display: "contents",
+    },
   });
 };
 
@@ -79,7 +82,6 @@ export const reactRenderer: Renderer = {
     return isReactComponent;
   },
   render: (Component, props, children) => {
-    console.log({ Component, props, children });
     return renderToString(
       React.createElement(
         Component,
