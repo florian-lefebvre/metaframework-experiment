@@ -1,10 +1,14 @@
 <script setup lang="ts">
-defineProps<{
+import { computed } from "vue"
+
+const props = defineProps<{
     name: string
 }>()
+
+const test = computed(() => props.name.toUpperCase())
 </script>
 
 <template>
-    <div>{{ name }}</div>
+    <div>{{ test }}</div>
     <div><slot /></div>
 </template>
