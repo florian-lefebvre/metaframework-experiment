@@ -18,8 +18,11 @@ export function App({ name }: { name: string }) {
       </a>
       <h1>Hello {name}!</h1>
       {/* <Island> */}
-      <ReactComponent name="React" />
-      <VueComponent name="Vue" />
+      <ReactComponent name="React">
+        <p>this is a test</p>
+        abcdef
+      </ReactComponent>
+      {/* <VueComponent name="Vue" /> */}
       {/* </Island> */}
       <div class="card">
         <button id="counter" type="button"></button>

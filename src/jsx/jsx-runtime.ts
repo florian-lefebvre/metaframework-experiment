@@ -9,15 +9,15 @@ export function createElement(
     [k: string]: any;
     children?: JSX.Children;
   },
-  ...children: Array<JSX.Children>
+  // ...children: Array<JSX.Children>
 ): JSX.Element {
   props ??= {};
 
   const finalChildren: JSX.Element[] = [];
 
-  for (const child of children) {
-    mapChildren(child, finalChildren);
-  }
+  // for (const child of children) {
+  //   mapChildren(child, finalChildren);
+  // }
 
   if (props?.children) {
     mapChildren(props.children, finalChildren);

@@ -216,18 +216,21 @@ export async function jsxToString(
 
   // Renderers
   for (const renderer of renderers) {
+    // TODO: process any prop that is a core node
     const { children, ...props } = jsxElement.props;
+    let newChildren = Array.isArray(children) ? children.flat() : [children];
+    for (let i = 0; i < newChildren.length; i++) {
+      const child = newChildren[i];
+      newChildren[i] = await $jsxToString.call(this, child, renderers);
+    }
+    newChildren = newChildren.join("");
     let jsxElementTag: any = jsxElement.tag;
     if (typeof jsxElement.tag === "function") {
       jsxElementTag = await jsxElement.tag.call(this, jsxElement.props);
     }
-    const valid = await renderer.check(jsxElementTag, props, children);
+    const valid = await renderer.check(jsxElementTag, props, newChildren);
     if (valid) {
-      return await renderer.render(
-        jsxElement.tag,
-        jsxElement.props,
-        jsxElement.props.children
-      );
+      return await renderer.render(jsxElement.tag, props, newChildren);
     }
   }
 
