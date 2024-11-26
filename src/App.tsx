@@ -28,7 +28,7 @@ export function App({ name }: { name: string }) {
       </VueComponent>
       {/* </Island> */}
       <div class="card">
-        <button id="counter" type="button"></button>
+        <button id="counter" type="button">Button</button>
       </div>
       <p class="read-the-docs">Click on the Vite logo to learn more</p>
     </div>

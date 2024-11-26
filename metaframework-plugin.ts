@@ -21,7 +21,7 @@ export function metaframeworkPlugin(): Array<vite.Plugin> {
                 rollupOptions: {
                   input: env.isSsrBuild
                     ? ["/src/entry-server", "/src/entry"]
-                    : ["/src/index.html", "/src/entry-client"],
+                    : ["/src/index.html"],
                 },
               },
         };
