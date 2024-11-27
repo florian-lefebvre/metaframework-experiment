@@ -135,12 +135,9 @@ export type Renderer = {
  * @return {Promise<string>} The string representation of the rendered JSX element.
  */
 export async function jsxToString(
-  this: any,
   jsxElement: JSX.Element,
   renderers: Array<Renderer>
 ): Promise<string> {
-  const $jsxToString = this?.jsxToString || jsxToString;
-
   if (jsxElement === null) {
     return "";
   }
@@ -169,7 +166,7 @@ export async function jsxToString(
     if (element.tag === "") {
       const result: string[] = [];
       for (const child of element.children) {
-        const str = await $jsxToString.call(this, child, renderers);
+        const str = await jsxToString(child, renderers);
         if (str.length > 0) {
           result.push(str);
         }
@@ -185,7 +182,7 @@ export async function jsxToString(
 
       const children: string[] = [];
       for (const child of element.children) {
-        const str = await $jsxToString.call(this, child, renderers);
+        const str = await jsxToString(child, renderers);
         if (str.length > 0) {
           children.push(str);
         }
@@ -199,17 +196,17 @@ export async function jsxToString(
 
   // Function we control
   if (typeof jsxElement.tag === "function") {
-    const jsxElementTag = await jsxElement.tag.call(this, jsxElement.props);
+    const jsxElementTag = await jsxElement.tag(jsxElement.props);
     if (typeof jsxElementTag === "object") {
       if (
         jsxElementTag === null ||
         jsxElementTag instanceof Tag ||
         jsxElementTag instanceof TextNode
       ) {
-        return await $jsxToString.call(this, jsxElementTag, renderers);
+        return await jsxToString(jsxElementTag, renderers);
       }
     } else {
-      return await $jsxToString.call(this, jsxElementTag, renderers);
+      return await jsxToString(jsxElementTag, renderers);
     }
     // Only objects that do not fit pass through
   }
@@ -220,17 +217,20 @@ export async function jsxToString(
 
   // Renderers
   for (const renderer of renderers) {
-    // TODO: process any prop that is a core node
+    // TODO: process slots
     const { children, ...props } = jsxElement.props;
-    let newChildren = Array.isArray(children) ? children.flat() : [children];
-    for (let i = 0; i < newChildren.length; i++) {
-      const child = newChildren[i];
-      newChildren[i] = await $jsxToString.call(this, child, renderers);
+    console.log(props);
+    const newChildrenElements = Array.isArray(children)
+      ? children.flat()
+      : [children];
+    for (let i = 0; i < newChildrenElements.length; i++) {
+      const child = newChildrenElements[i];
+      newChildrenElements[i] = await jsxToString(child, renderers);
     }
-    newChildren = newChildren.join("");
+    const newChildren = newChildrenElements.join("");
     let jsxElementTag: any = jsxElement.tag;
     if (typeof jsxElement.tag === "function") {
-      jsxElementTag = await jsxElement.tag.call(this, jsxElement.props);
+      jsxElementTag = await jsxElement.tag(jsxElement.props);
     }
     const valid = await renderer.check(jsxElementTag, props, newChildren);
     if (valid) {
@@ -242,3 +242,14 @@ export async function jsxToString(
 }
 
 function assertSync(_: JSX.Element): asserts _ is JSX.SyncElement {}
+
+// type SlotConstraint = JSX.Element | ((...args: Array<any>) => JSX.Element);
+type SlotConstraint = JSX.Element;
+
+class Slot {
+  readonly type = "slot" as const;
+  constructor(public element: SlotConstraint) {}
+}
+
+export const slot = <T extends SlotConstraint>(e: T) =>
+  new Slot(e) as unknown as T;

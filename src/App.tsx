@@ -1,6 +1,7 @@
 /** @jsxImportSource ./jsx */
 
 import javascriptLogo from "./javascript.svg";
+import { slot } from "./jsx/render";
 import { ReactComponent } from "./ReactComponent";
 import VueComponent from "./VueComponent.vue";
 
@@ -18,7 +19,7 @@ export function App({ name }: { name: string }) {
       </a>
       <h1>Hello {name}!</h1>
       {/* <Island> */}
-      <ReactComponent name="React">
+      <ReactComponent name="React" icon={slot(<div>icon</div>)}>
         <p>this is a test</p>
         abcdef
       </ReactComponent>
@@ -28,7 +29,9 @@ export function App({ name }: { name: string }) {
       </VueComponent>
       {/* </Island> */}
       <div class="card">
-        <button id="counter" type="button">Button</button>
+        <button id="counter" type="button">
+          Button
+        </button>
       </div>
       <p class="read-the-docs">Click on the Vite logo to learn more</p>
     </div>
