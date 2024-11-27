@@ -117,13 +117,13 @@ const VOID_TAGS = new Set([
 export type Renderer = {
   check: (
     Component: any,
-    props: any,
-    children: any
+    props: Record<string, any>,
+    slots: Record<string, string>
   ) => boolean | Promise<boolean>;
   render: (
     Component: any,
-    props: any,
-    children: any
+    props: Record<string, any>,
+    slots: Record<string, string>
   ) => string | Promise<string>;
 };
 
@@ -217,24 +217,41 @@ export async function jsxToString(
 
   // Renderers
   for (const renderer of renderers) {
-    // TODO: process slots
-    const { children, ...props } = jsxElement.props;
-    console.log(props);
-    const newChildrenElements = Array.isArray(children)
-      ? children.flat()
-      : [children];
-    for (let i = 0; i < newChildrenElements.length; i++) {
-      const child = newChildrenElements[i];
-      newChildrenElements[i] = await jsxToString(child, renderers);
+    const props = { ...jsxElement.props };
+    let slots: Record<string, Array<JSX.Element>> = {};
+
+    for (const [key, value] of Object.entries(props)) {
+      if (key === "children") {
+        slots.default = Array.isArray(value) ? value.flat() : [value];
+        delete props.children;
+      } else if (value instanceof Slot) {
+        slots[key] = [value.element];
+        delete props[key];
+      } else if (value instanceof Tag || value instanceof TextNode) {
+        // TODO: improve
+        console.warn("unsupported");
+        slots[key] = [""];
+        delete slots[key];
+      }
     }
-    const newChildren = newChildrenElements.join("");
+
+    const slotsContents: Record<string, string> = {};
+
+    for (const [key, value] of Object.entries(slots)) {
+      let content = "";
+      for (const element of value) {
+        content += await jsxToString(element, renderers);
+      }
+      slotsContents[key] = content;
+    }
+
     let jsxElementTag: any = jsxElement.tag;
     if (typeof jsxElement.tag === "function") {
       jsxElementTag = await jsxElement.tag(jsxElement.props);
     }
-    const valid = await renderer.check(jsxElementTag, props, newChildren);
+    const valid = await renderer.check(jsxElementTag, props, slotsContents);
     if (valid) {
-      return await renderer.render(jsxElement.tag, props, newChildren);
+      return await renderer.render(jsxElement.tag, props, slotsContents);
     }
   }
 

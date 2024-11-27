@@ -23,7 +23,7 @@ export function App({ name }: { name: string }) {
         <p>this is a test</p>
         abcdef
       </ReactComponent>
-      <VueComponent name="Vue">
+      <VueComponent name="Vue" icon={slot(<div>icon</div>)}>
         <p>this is a test</p>
         abcdef
       </VueComponent>

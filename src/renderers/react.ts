@@ -35,7 +35,7 @@ const StaticHtml = ({ value, name }: { value?: string; name?: string }) => {
 StaticHtml.shouldComponentUpdate = () => false;
 
 export const reactRenderer: Renderer = {
-  check: (Component, props, children) => {
+  check(Component, props, slots) {
     // Note: there are packages that do some unholy things to create "components".
     // Checking the $$typeof property catches most of these patterns.
     if (typeof Component === "object" && "$$typeof" in Component) {
@@ -76,17 +76,38 @@ export const reactRenderer: Renderer = {
       return React.createElement("div");
     }
 
-    const vnode = React.createElement(Tester, props, children);
-    renderToString(vnode);
+    this.render(Tester, props, slots);
 
     return isReactComponent;
   },
-  render: (Component, props, children) => {
+  render(Component, props, { default: children, ...slotted }) {
+    if ("class" in props) {
+      props.className = props.class;
+      delete props.class;
+    }
+
+    const slots: Record<string, React.ReactNode> = {};
+    for (const [key, value] of Object.entries(slotted)) {
+      slots[key] = React.createElement(StaticHtml, {
+        value,
+        name: key,
+      });
+    }
+    const newProps = {
+      ...props,
+      ...slots,
+    };
+
+    if (children) {
+      newProps.children = React.createElement(StaticHtml, {
+        value: children,
+      });
+    }
+
     return renderToString(
       React.createElement(
         Component,
-        props,
-        React.createElement(StaticHtml, { value: children })
+        newProps,
       )
     );
   },
