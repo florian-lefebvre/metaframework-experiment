@@ -260,7 +260,6 @@ export async function jsxToString(
 
 function assertSync(_: JSX.Element): asserts _ is JSX.SyncElement {}
 
-// type SlotConstraint = JSX.Element | ((...args: Array<any>) => JSX.Element);
 type SlotConstraint = JSX.Element;
 
 class Slot {

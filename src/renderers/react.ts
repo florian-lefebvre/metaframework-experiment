@@ -1,6 +1,7 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
 import { Renderer } from "../jsx/render";
+import { SLOT_ELEMENT } from "../hydration/constants";
 
 // Source: https://github.com/withastro/astro/blob/main/packages/integrations/react/server.js
 
@@ -15,7 +16,7 @@ const reactTypeof = Symbol.for("react.element");
  */
 const StaticHtml = ({ value, name }: { value?: string; name?: string }) => {
   if (!value) return null;
-  return React.createElement("framework-slot", {
+  return React.createElement(SLOT_ELEMENT, {
     name,
     suppressHydrationWarning: true,
     dangerouslySetInnerHTML: { __html: value },

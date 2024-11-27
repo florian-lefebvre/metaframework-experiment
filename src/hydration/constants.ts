@@ -1,0 +1,1 @@
+export const SLOT_ELEMENT = "framework-slot";
