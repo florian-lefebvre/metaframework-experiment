@@ -1,20 +1,20 @@
-export type Tag = {
-  type: "tag";
-  tag: (props: Props) => JSX.Element;
-  props: Props;
-  __renderer: "core"
-};
+export class Tag {
+  readonly type = "tag" as const;
+  constructor(
+    public readonly tag: (props: Props) => JSX.Element,
+    public readonly props: Props
+  ) {}
+}
 
 type Props = {
   [k: string]: any;
   children?: JSX.Children;
 };
 
-type TextNode = {
-  type: "textNode";
-  text: string;
-  __renderer: "core";
-};
+export class TextNode {
+  readonly type = "textNode" as const;
+  constructor(public readonly text: string) {}
+}
 
 export namespace JSX {
   export type AsyncElement = Promise<SyncElement>;

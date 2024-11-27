@@ -1,4 +1,4 @@
-import type { JSX } from "./jsx.types";
+import { Tag, TextNode, type JSX } from "./jsx.types";
 
 export function createElement(
   tag:
@@ -8,7 +8,7 @@ export function createElement(
   props?: {
     [k: string]: any;
     children?: JSX.Children;
-  },
+  }
   // ...children: Array<JSX.Children>
 ): JSX.Element {
   props ??= {};
@@ -25,30 +25,20 @@ export function createElement(
 
   props.children = finalChildren;
 
-  return {
-    type: "tag",
+  return new Tag(
     //@ts-expect-error
     tag,
-    props,
-    __renderer: "core",
-  };
+    props
+  );
 }
 
 function mapChildren(children: JSX.Children, accumulator: JSX.Element[]): void {
   switch (typeof children) {
     case "string":
-      accumulator.push({
-        type: "textNode",
-        text: children,
-        __renderer: "core",
-      });
+      accumulator.push(new TextNode(children));
       break;
     case "number":
-      accumulator.push({
-        type: "textNode",
-        text: children.toString(),
-        __renderer: "core",
-      });
+      accumulator.push(new TextNode(children.toString()));
       break;
     case "object":
       if (Array.isArray(children)) {

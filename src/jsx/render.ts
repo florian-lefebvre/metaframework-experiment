@@ -1,4 +1,4 @@
-import type { JSX, Tag } from "./jsx.types";
+import { TextNode, type JSX, Tag } from "./jsx.types";
 
 export function attributesToString(attributes: Attributes): string {
   const result: string[] = [];
@@ -201,7 +201,11 @@ export async function jsxToString(
   if (typeof jsxElement.tag === "function") {
     const jsxElementTag = await jsxElement.tag.call(this, jsxElement.props);
     if (typeof jsxElementTag === "object") {
-      if (jsxElementTag === null || jsxElementTag.__renderer === "core") {
+      if (
+        jsxElementTag === null ||
+        jsxElementTag instanceof Tag ||
+        jsxElementTag instanceof TextNode
+      ) {
         return await $jsxToString.call(this, jsxElementTag, renderers);
       }
     } else {
