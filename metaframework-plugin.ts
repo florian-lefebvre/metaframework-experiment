@@ -1,5 +1,4 @@
 import * as vite from "vite";
-import fs from "node:fs/promises";
 
 export function metaframeworkPlugin(): Array<vite.Plugin> {
   return [
@@ -21,7 +20,7 @@ export function metaframeworkPlugin(): Array<vite.Plugin> {
                 rollupOptions: {
                   input: env.isSsrBuild
                     ? ["/src/entry-server", "/src/entry"]
-                    : ["/src/index.html"],
+                    : ["/src/style.css"],
                 },
               },
         };
@@ -31,14 +30,8 @@ export function metaframeworkPlugin(): Array<vite.Plugin> {
           server.middlewares.use(async (req, res, next) => {
             const url = (req.originalUrl ?? "").replace("/", "");
 
-            let template = await fs.readFile("./src/index.html", "utf-8");
-            template = await server.transformIndexHtml(url, template);
             const { render } = await server.ssrLoadModule("/src/entry-server");
-            const rendered = await render(url);
-
-            const html = template
-              .replace(`<!--app-head-->`, rendered.head ?? "")
-              .replace(`<!--app-html-->`, rendered.html ?? "");
+            const { html } = await render(url);
 
             res.statusCode = 200;
             res.setHeader("Content-Type", "text/html");

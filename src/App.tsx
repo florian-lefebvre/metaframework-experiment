@@ -18,7 +18,7 @@ export function App({ name }: { name: string }) {
         <img src={javascriptLogo} class="logo vanilla" alt="JavaScript logo" />
       </a>
       <h1>Hello {name}!</h1>
-      {/* <Island> */}
+      {/* TODO: client directives */}
       <ReactComponent name="React" icon={slot(<div>icon</div>)}>
         <p>this is a test</p>
         abcdef
@@ -27,13 +27,13 @@ export function App({ name }: { name: string }) {
         <p>this is a test</p>
         abcdef
       </VueComponent>
-      {/* </Island> */}
       <div class="card">
         <button id="counter" type="button">
           Button
         </button>
       </div>
       <p class="read-the-docs">Click on the Vite logo to learn more</p>
+      <script>{`console.log('test')`}</script>
     </div>
   );
 }
